@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <title>Node-mongo</title>
+</head>
+<body>
+    <h1>Node mongo website</h1>
+    <p id="userId"></p>
+    <div class="container">
+        <div class="row">
+            <input type="text" class="form-control" id="user">
+            <button class="btn btn-primary" id="addUser">Add user</button>
+        </div>
+    </div>
+    <script>
+        fetch('http://localhost:3001/user/5')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('userId').innerText = data.name;
+        });
+
+        //post data to the user
+        const btnAddUser = document.getElementById('addUser');
+        btnAddUser.addEventListener('click', ()=> {
+            const name = document.getElementById('user').value;
+            const user = {name};
+            console.log(user);
+            //post
+            fetch('http://localhost:3001/addUser', {
+                method: 'POST',
+                body: JSON.stringify(user),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+            .then(res => res.json())
+            .then(data => updateUser(data));
+        })
+        function updateUser(user){
+            document.getElementById('userId').innerText = user.name;
+        }
+    </script>
+</body>
+</html>
